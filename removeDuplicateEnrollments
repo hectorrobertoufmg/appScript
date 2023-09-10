@@ -1,0 +1,31 @@
+/**
+ * Função para remover matrículas duplicadas em uma planilha do Google Sheets.
+ */
+function removeDuplicateEnrollments() {
+  // Obtém a planilha ativa.
+  var ss = SpreadsheetApp.getActive();
+  
+  // Determina o número da última linha e coluna preenchida na planilha.
+  var lastRow = ss.getLastRow();
+  var lastColumn = ss.getLastColumn();
+  
+  // Variáveis para armazenar as matrículas atuais e próximas.
+  var enrollment;
+  var nextEnrollment;
+
+  // Loop externo para percorrer as linhas da planilha (exceto a última).
+  for (var i = 1; i < lastRow; i++) {
+    
+    // Loop interno para comparar a matrícula atual com as próximas.
+    for (var j = i + 1; j <= lastRow; j++) {
+      // Obtém os valores da coluna "C" como strings.
+      enrollment = ss.getRange("C" + i).getValue().toString();
+      nextEnrollment = ss.getRange("C" + j).getValue().toString();
+      
+      // Compara as matrículas. Se forem iguais, exclui a linha duplicada.
+      if (enrollment == nextEnrollment) {
+        ss.deleteRow(j);
+      }
+    }
+  }
+}
